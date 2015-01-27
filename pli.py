@@ -32,6 +32,8 @@ RESPONSE_SUCCESS         = 0xC8
 BATTERY_VOLTAGE          = 0x32
 BATTERY_TEMP             = 0x34
 
+VOLTAGE_SETTING          = 0x2B
+
 class PLI:
 
 	def __init__(self, target, timeout=5, retries=3, retry_delay=1.0):
@@ -129,6 +131,16 @@ class PLI:
 		"""	Wrapper to read from volatile RAM location.
 		"""
 		return ord(self.comm_call(READ_PROCESSOR_LOCATION, index))
+
+	def get_eeprom(self, index):
+		"""	Read from EEPROM (non-volatile) RAM location
+		"""
+		return ord(self.comm_call(READ_EEPROM_LOCATION, index))
+
+	def set_eeprom(self, index, value):
+		"""	Write to EEPROM (non-volatile) RAM location
+		"""
+		return ord(self.comm_call(WRITE_EEPROM_LOCATION, index, value))
 
 	def loopback_test(self):
 		self.comm_write(''.join((
